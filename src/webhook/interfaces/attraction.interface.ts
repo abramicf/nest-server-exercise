@@ -3,6 +3,6 @@ export interface Attraction {
   type: string;
   name: string;
   description: string;
-  lat: number;
-  lng: number;
+  searchLat: number;
+  searchLng: number;
 } 

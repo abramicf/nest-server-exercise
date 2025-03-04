@@ -41,8 +41,8 @@ out tags;`;
       for (const element of data.elements) {
         if (element.tags && element.tags.tourism === 'attraction') {
           attractions.push({
-            lat,
-            lng,
+            searchLat: lat,
+            searchLng: lng,
             id: element.id,
             type: element.type,
             name: element.tags.name || 'Unnamed attraction',
