@@ -17,8 +17,8 @@ export class WebhookController {
   async handleWebhook(@Body() webhookDto: WebhookDto) {
     console.log('DTO', webhookDto);
     const attractions = await this.overpassService.findNearbyAttractions(
-      48.8584,
-      2.2945
+      webhookDto.lat,
+      webhookDto.lng
     );
 
     return {
