@@ -5,5 +5,4 @@ export interface Attraction {
   description: string;
   lat: number;
   lng: number;
-  distance: number;
 } 

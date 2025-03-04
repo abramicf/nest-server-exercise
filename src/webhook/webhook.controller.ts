@@ -36,7 +36,6 @@ export class WebhookController {
   async generateTestToken() {
     const testUsername = 'test-user';
     const token = this.authService.generateToken(testUsername);
-    
     return {
       status: 'success',
       message: 'Test token generated successfully',
