@@ -2,20 +2,32 @@ import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus, Get } from '@n
 import { WebhookDto } from './dto/webhook.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
+import { OverpassService } from './overpass.service';
 
 @Controller('webhook')
 export class WebhookController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly overpassService: OverpassService,
+  ) {}
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   async handleWebhook(@Body() webhookDto: WebhookDto) {
-    // Here you can add your business logic to handle the webhook
+    console.log('DTO', webhookDto);
+    const attractions = await this.overpassService.findNearbyAttractions(
+      48.8584,
+      2.2945
+    );
+
     return {
       status: 'success',
-      message: 'Webhook received successfully',
-      data: webhookDto
+      message: 'Webhook processed successfully',
+      data: {
+        coordinates: webhookDto,
+        attractions,
+      },
     };
   }
 
