@@ -57,7 +57,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Deployment
+<!-- ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
@@ -68,7 +68,7 @@ $ npm install -g mau
 $ mau deploy
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure. -->
 
 ## Resources
 
@@ -195,7 +195,7 @@ curl http://localhost:3000/webhook/test-token
 curl -X POST http://localhost:3000/webhook \
   -H "Authorization: Bearer YOUR_TOKEN_HERE" \
   -H "Content-Type: application/json" \
-  -d '{"lat": 48.8584, "lng": 2.2945}'
+  -d '{"lat": 48.8584, "lng": 2.2945, "radius": 1000}'
 ```
 
 ## Error Responses
