@@ -41,7 +41,7 @@ $ npm run start
 $ npm run start:dev
 
 # production mode
-$ npm run start:prod
+# $ npm run start:prod
 ```
 
 ## Run tests
@@ -96,3 +96,141 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+# NestJS Server API Documentation
+
+This server provides endpoints for managing landmarks and attractions data with JWT authentication.
+
+## Authentication
+
+All protected endpoints require a JWT token in the Authorization header:
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+## Endpoints
+
+### 1. Generate Test Token
+Get a JWT token for testing the API.
+
+```http
+GET /webhook/test-token
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "Test token generated successfully",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "username": "test-user",
+    "usage": "Add this token to your request header as: Authorization: Bearer <token>"
+  }
+}
+```
+
+### 2. Webhook Endpoint
+Submit coordinates to find nearby attractions.
+
+```http
+POST /webhook
+```
+
+**Headers:**
+```
+Authorization: Bearer <your_jwt_token>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "lat": 48.8584,
+  "lng": 2.2945,
+  "radius": 500  // Optional, defaults to 500 meters
+}
+```
+
+**Validation Rules:**
+- `lat`: Number between -90 and 90
+- `lng`: Number between -180 and 180
+- `radius`: Optional positive number (in meters)
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "Webhook processed successfully",
+  "data": {
+    "coordinates": {
+      "lat": 48.8584,
+      "lng": 2.2945,
+      "radius": 500
+    },
+    "attractions": [
+      {
+        "id": 4208595,
+        "type": "way",
+        "name": "Champ de Mars",
+        "description": "string",
+        "searchLat": 48.8584,
+        "searchLng": 2.2945
+      }
+      // ... more attractions
+    ]
+  }
+}
+```
+
+## Example Usage
+
+1. First, get a test token:
+```bash
+curl http://localhost:3000/webhook/test-token
+```
+
+2. Use the token to make a webhook request:
+```bash
+curl -X POST http://localhost:3000/webhook \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{"lat": 48.8584, "lng": 2.2945}'
+```
+
+## Error Responses
+
+### Invalid JSON Format
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid JSON format",
+  "error": "Bad Request"
+}
+```
+
+### Validation Error
+```json
+{
+  "statusCode": 400,
+  "message": ["lat must be a number"],
+  "error": "Bad Request"
+}
+```
+
+### Unauthorized
+```json
+{
+  "statusCode": 401,
+  "message": "Unauthorized",
+  "error": "Unauthorized"
+}
+```
+
+## Notes
+
+1. The server uses JWT authentication for protected endpoints
+2. All coordinates are validated to ensure they are within valid ranges
+3. The radius parameter is optional and defaults to 500 meters
+4. The server will return nearby attractions based on the provided coordinates
+5. All responses include a status and message field for consistency
