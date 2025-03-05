@@ -15,10 +15,10 @@ export class WebhookController {
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   async handleWebhook(@Body() webhookDto: WebhookDto) {
-    console.log('DTO', webhookDto);
     const attractions = await this.overpassService.findNearbyAttractions(
       webhookDto.lat,
-      webhookDto.lng
+      webhookDto.lng,
+      webhookDto.radius
     );
 
     return {

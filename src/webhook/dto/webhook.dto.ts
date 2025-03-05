@@ -12,4 +12,10 @@ export class WebhookDto {
   @Min(-180)
   @Max(180)
   lng: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0)
+  @Max(100000)
+  radius: number;
 } 
