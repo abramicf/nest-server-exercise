@@ -1,21 +1,21 @@
 import { IsNumber, IsNotEmpty, Min, Max } from 'class-validator';
 
 export class WebhookDto {
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
-  @Min(-90)
-  @Max(90)
+  // @Min(-90)
+  // @Max(90)
   lat: number;
 
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
-  @Min(-180)
-  @Max(180)
+  // @Min(-180)
+  // @Max(180)
   lng: number;
 
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
-  @Min(0)
-  @Max(100000)
+  // @Min(0)
+  // @Max(100000)
   radius: number;
 } 

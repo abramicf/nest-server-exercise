@@ -1,8 +1,9 @@
-import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus, Get, ValidationPipe, UsePipes } from '@nestjs/common';
 import { WebhookDto } from './dto/webhook.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { OverpassService } from './overpass.service';
+import { JsonParsePipe } from './pipes/json-parse.pipe';
 
 @Controller('webhook')
 export class WebhookController {
@@ -14,7 +15,9 @@ export class WebhookController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
+  @UsePipes(new ValidationPipe())
   async handleWebhook(@Body() webhookDto: WebhookDto) {
+    console.log('DTO', webhookDto);
     const attractions = await this.overpassService.findNearbyAttractions(
       webhookDto.lat,
       webhookDto.lng,
@@ -36,6 +39,7 @@ export class WebhookController {
   async generateTestToken() {
     const testUsername = 'test-user';
     const token = this.authService.generateToken(testUsername);
+    
     return {
       status: 'success',
       message: 'Test token generated successfully',
